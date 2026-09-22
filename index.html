@@ -116,15 +116,15 @@
     .lid-greeting {
       position: absolute;
       left: 7%;
-      bottom: 7%;
-      width: 34%;
+      bottom: 10.5%;
+      width: 38%;
       z-index: 5;
       text-align: center;
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
       font-weight: 700;
-      font-size: clamp(2rem, 4vw, 4.2rem);
-      line-height: 0.95;
+      font-size: clamp(2.4rem, 4.8vw, 5rem);
+      line-height: 0.94;
       letter-spacing: 0.02em;
       color: #f3e5c8;
       background: linear-gradient(180deg, #fff3c9 0%, #d8b76c 42%, #a87b2f 100%);
@@ -136,17 +136,35 @@
       pointer-events: none;
     }
 
+    .lid-hint {
+      margin-top: 9px;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: normal;
+      font-weight: 500;
+      font-size: clamp(0.95rem, 1.55vw, 1.35rem);
+      line-height: 1.05;
+      letter-spacing: 0.035em;
+      color: rgba(244, 226, 183, .9);
+      -webkit-text-fill-color: rgba(244, 226, 183, .9);
+      text-shadow: 0 1px 3px rgba(0,0,0,.8);
+    }
+
     @media (max-width: 600px) and (orientation: portrait) {
       .box-lid-viewport.opened {
         transform: translateY(-110dvh) rotateX(6deg);
       }
 
       .lid-greeting {
-        left: 7%;
-        bottom: 8%;
-        width: 46%;
-        font-size: clamp(2rem, 8.5vw, 3.2rem);
+        left: 6%;
+        bottom: 10%;
+        width: 52%;
+        font-size: clamp(2.25rem, 9vw, 3.5rem);
         line-height: 0.92;
+      }
+
+      .lid-hint {
+        margin-top: 6px;
+        font-size: clamp(0.9rem, 3.6vw, 1.15rem);
       }
     }
 
@@ -594,7 +612,10 @@
       <source media="(max-width: 600px) and (orientation: portrait)" srcset="lid2.png">
       <img class="lid-image" src="lid.png" alt="Birthday gift lid">
     </picture>
-    <div class="lid-greeting">Happy Birthday!</div>
+    <div class="lid-greeting">
+      <div>Happy Birthday!</div>
+      <div class="lid-hint">Нажми на коробку</div>
+    </div>
   </div>
 
   <!-- ========================================================
@@ -618,15 +639,15 @@
        DATA: 9 OUTFITS & 3 REUSED PAPERS
        ======================================================== */
     const outfitsData = [
-      { id: 1, emoji: "🪄", file: "outfit-1.png", paperFile: "paper-1.png", wish: "“ Для Нади ведущей настолок: Весёлых игр и азартных игроков!”" },
-      { id: 2, emoji: "📚", file: "outfit-2.png", paperFile: "paper-2.png", wish: "“ Для Нади учителя: Благодарных учеников, которые ценят тебя и твой профессионализм! (+ много денег)”" },
-      { id: 3, emoji: "🌟", file: "outfit-3.png", paperFile: "paper-3.png", wish: "“ Для Нади звезды SkyStars: Интересных заданий и лёгких побед!”" },
-      { id: 4, emoji: "🧛‍♀️", file: "outfit-4.png", paperFile: "paper-1.png", wish: "“ Для Нади энтузиаста: Друзей, которые разделяют твои увлечения!”" },
-      { id: 5, emoji: "💄", file: "outfit-5.png", paperFile: "paper-2.png", wish: "“ Для Нади идейницы: Нескончаемого вдохновения и творческой реализации!”" },
-      { id: 6, emoji: "📸", file: "outfit-6.png", paperFile: "paper-3.png", wish: "“ Для Нади путешественницы: Дорог неизведанно-интересных и приключений приятных!”" },
-      { id: 7, emoji: "💻", file: "outfit-7.png", paperFile: "paper-1.png", wish: "“ Для Нади амбассадора: Звёздных проектов с нужным тебе уровнем славы!”" },
-      { id: 8, emoji: "🧸", file: "outfit-8.png", paperFile: "paper-2.png", wish: "“ Для Нади мамы: Увеличения процента спокойных дней материнства!”" },
-      { id: 9, emoji: "🎭", file: "outfit-9.png", paperFile: "paper-3.png", wish: "“ Для Нади жены Дракулы: Каплю доброй сказки в привычную жизнь!”" }
+      { id: 1, emoji: "🪄", file: "outfit-1.png", paperFile: "paper-1.png", wish: "“ Пусть дом всегда будет полной чашей, а семья — твоей опорой, силой и счастьем!”" },
+      { id: 2, emoji: "🌟", file: "outfit-2.png", paperFile: "paper-2.png", wish: "“ Сияй так же ярко, как всегда, и смело встречай все перемены на своём пути!”" },
+      { id: 3, emoji: "💻", file: "outfit-3.png", paperFile: "paper-3.png", wish: "“ Пусть все рабочие процессы будут в твоих руках, а дела решаются легко, красиво и успешно!”" },
+      { id: 4, emoji: "🏔️", file: "outfit-4.png", paperFile: "paper-1.png", wish: "“ Пусть тебе покоряются любые вершины, а горы становятся лишь поводом подняться ещё выше!”" },
+      { id: 5, emoji: "💄", file: "outfit-5.png", paperFile: "paper-2.png", wish: "“ Оставайся всегда той самой дивой — яркой, стильной и неповторимой!”" },
+      { id: 6, emoji: "🎨", file: "outfit-6.png", paperFile: "paper-3.png", wish: "“ Пусть в жизни каждый день будет больше красоты, вдохновения и искусства!”" },
+      { id: 7, emoji: "🚲", file: "outfit-7.png", paperFile: "paper-1.png", wish: "“ Пусть дороги всегда ведут тебя в правильную сторону — к новым местам, впечатлениям и приключениям!”" },
+      { id: 8, emoji: "🐕", file: "outfit-8.png", paperFile: "paper-2.png", wish: "“ Пусть каждый день будет наполнен уютом, теплом, любимыми людьми (и не только) и счастливыми моментами!”" },
+      { id: 9, emoji: "💃", file: "outfit-9.png", paperFile: "paper-3.png", wish: "“ Пусть все проблемы уходят в танце, а лёгкое движение превращает любой день в праздник!”" }
     ];
 
     /* ========================================================
