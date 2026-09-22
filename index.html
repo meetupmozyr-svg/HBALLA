@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Happy Birthday! 🎀</title>
   
   <!-- High-End Calligraphy & Serif -->
@@ -32,15 +32,24 @@
 
     /* STRICT ZERO-SCROLL LOCKED VIEWPORT */
     html, body {
-      width: 100vw;
-      height: 100vh;
+      width: 100%;
+      height: 100%;
+      min-height: 100%;
       overflow: hidden;
       position: fixed;
+      inset: 0;
       background: #0d0809;
       display: flex;
       align-items: center;
       justify-content: center;
       font-family: 'Playfair Display', serif;
+      overscroll-behavior: none;
+      touch-action: manipulation;
+    }
+
+    /* Use the real viewport height on modern mobile browsers. */
+    @supports (height: 100dvh) {
+      html, body { height: 100dvh; }
     }
 
     /* Sound Control Button */
@@ -69,100 +78,76 @@
     }
 
     /* ========================================================
-       STAGE 1: FULL-SCREEN SOLID BOX LID (NO DISSOLVE)
+       STAGE 1: CUSTOM PNG LID
+       Desktop  -> lid.png
+       Portrait -> lid2.png
+       The artwork is the complete lid; only the gold greeting is overlaid.
        ======================================================== */
     .box-lid-viewport {
       position: fixed;
       inset: 0;
       z-index: 900;
-      background: radial-gradient(circle at 50% 40%, #2f2326 0%, #171113 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: inset 0 0 120px rgba(0,0,0,0.85);
+      overflow: hidden;
       cursor: pointer;
-      /* SOLID MOVEMENT: OPAQUE AND HEAVY */
+      background: #120708;
       transition: transform 1.15s cubic-bezier(0.7, 0, 0.2, 1);
       perspective: 1200px;
-    }
-    .box-lid-viewport.opened {
-      transform: translateY(-135vh) rotateX(10deg);
+      touch-action: manipulation;
     }
 
-    .lid-surface {
-      position: absolute;
-      inset: 20px;
-      border: 2px solid rgba(197, 160, 89, 0.4);
-      outline: 1px solid rgba(197, 160, 89, 0.2);
-      outline-offset: -10px;
-      box-shadow: inset 0 0 40px rgba(0,0,0,0.5);
+    .box-lid-viewport.opened {
+      transform: translateY(-110vh) rotateX(7deg);
     }
-    .lid-ribbon-v {
+
+    .lid-image {
       position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 50%;
-      width: 76px;
-      transform: translateX(-50%);
-      background: linear-gradient(90deg, #6c1221, var(--ribbon-sheen) 50%, #6c1221);
-      box-shadow: 0 0 25px rgba(0,0,0,0.6);
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-drag: none;
     }
-    .lid-ribbon-h {
+
+    /* Elegant gold greeting in the lower-left area. */
+    .lid-greeting {
       position: absolute;
-      left: 0;
-      right: 0;
-      top: 50%;
-      height: 76px;
-      transform: translateY(-50%);
-      background: linear-gradient(180deg, #6c1221, var(--ribbon-sheen) 50%, #6c1221);
-      box-shadow: 0 0 25px rgba(0,0,0,0.6);
-    }
-    .lid-seal {
-      position: relative;
-      z-index: 10;
-      width: min(340px, 80vw);
-      padding: 34px 28px;
-      background: #fffdf9;
-      border-radius: 4px;
-      border: 2px solid var(--gold);
-      box-shadow: 0 20px 50px rgba(0,0,0,0.6), inset 0 0 0 6px #fffdf9, inset 0 0 0 8px var(--gold-light);
+      left: 7%;
+      bottom: 7%;
+      width: 34%;
+      z-index: 5;
       text-align: center;
-      transition: transform 0.4s ease;
-    }
-    .box-lid-viewport:hover .lid-seal {
-      transform: scale(1.03);
-    }
-    .seal-subtitle {
-      font-size: 0.72rem;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      color: var(--gold-dark);
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
       font-weight: 700;
-      margin-bottom: 8px;
+      font-size: clamp(2rem, 4vw, 4.2rem);
+      line-height: 0.95;
+      letter-spacing: 0.02em;
+      color: #f3e5c8;
+      background: linear-gradient(180deg, #fff3c9 0%, #d8b76c 42%, #a87b2f 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 2px 4px rgba(0,0,0,.75), 0 8px 18px rgba(0,0,0,.55);
+      filter: drop-shadow(0 1px 0 rgba(255,255,255,.12));
+      pointer-events: none;
     }
-    .seal-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(1.6rem, 3.5vw, 2.2rem);
-      font-weight: 700;
-      color: #2b2523;
-      margin-bottom: 14px;
-    }
-    .seal-prompt {
-      display: inline-block;
-      font-size: 0.75rem;
-      letter-spacing: 2px;
-      color: #fff;
-      background: var(--ribbon-red);
-      padding: 7px 18px;
-      border-radius: 20px;
-      text-transform: uppercase;
-      font-weight: 600;
-      box-shadow: 0 4px 12px rgba(143, 29, 48, 0.35);
-      animation: pulseButton 2s infinite ease-in-out;
-    }
-    @keyframes pulseButton {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.06); }
+
+    @media (max-width: 600px) and (orientation: portrait) {
+      .box-lid-viewport.opened {
+        transform: translateY(-110dvh) rotateX(6deg);
+      }
+
+      .lid-greeting {
+        left: 7%;
+        bottom: 8%;
+        width: 46%;
+        font-size: clamp(2rem, 8.5vw, 3.2rem);
+        line-height: 0.92;
+      }
     }
 
     /* ========================================================
@@ -170,14 +155,16 @@
        ======================================================== */
     .box-canvas {
       position: relative;
-      width: 100vw;
-      height: 100vh;
-      max-width: calc(100vh * (16 / 10));
-      max-height: calc(100vw * (10 / 16));
+      width: min(100vw, calc(100vh * 1.6));
+      height: min(100vh, calc(100vw * 0.625));
       aspect-ratio: 16 / 10;
-      background: url('bg.png') center center / 100% 100% no-repeat;
+      background-image: url('bg.png');
+      background-position: center center;
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
       box-shadow: 0 0 60px rgba(0, 0, 0, 0.9);
       overflow: hidden;
+      flex: 0 0 auto;
     }
 
     /* ========================================================
@@ -360,9 +347,217 @@
     #item-9.is-opened { right: 4%; top: 73%; transform: rotate(8deg); }
 
     /* ========================================================
+       MOBILE COMPOSITION
+       The desktop scene is 16:10. On portrait phones that would
+       make the entire box only ~240px tall, so mobile gets a
+       full-height composition instead of a scaled-down desktop.
+       ======================================================== */
+
+    @media (max-width: 600px) and (orientation: portrait) {
+      html, body {
+        width: 100%;
+        height: 100dvh;
+      }
+
+      .sound-toggle {
+        top: max(12px, env(safe-area-inset-top));
+        right: max(12px, env(safe-area-inset-right));
+        width: 42px;
+        height: 42px;
+        font-size: 1rem;
+      }
+
+      .box-lid-viewport {
+        padding:
+          max(16px, env(safe-area-inset-top))
+          max(16px, env(safe-area-inset-right))
+          max(16px, env(safe-area-inset-bottom))
+          max(16px, env(safe-area-inset-left));
+        perspective: 900px;
+      }
+
+      .box-lid-viewport.opened {
+        transform: translateY(-110dvh) rotateX(8deg);
+      }
+
+      .lid-surface {
+        inset: 10px;
+      }
+
+      .lid-ribbon-v {
+        width: 18vw;
+        max-width: 64px;
+        min-width: 42px;
+      }
+
+      .lid-ribbon-h {
+        height: 18vw;
+        max-height: 64px;
+        min-height: 42px;
+      }
+
+      .lid-seal {
+        width: min(86vw, 340px);
+        padding: 28px 20px;
+      }
+
+      .seal-subtitle {
+        font-size: clamp(0.58rem, 2.7vw, 0.72rem);
+        letter-spacing: clamp(2px, 0.9vw, 4px);
+      }
+
+      .seal-title {
+        font-size: clamp(1.55rem, 8vw, 2.2rem);
+      }
+
+      .seal-prompt {
+        font-size: clamp(0.62rem, 2.8vw, 0.75rem);
+        letter-spacing: 1.2px;
+        padding: 8px 14px;
+      }
+
+      .box-canvas {
+        width: 100vw;
+        height: 100dvh;
+        max-width: none;
+        max-height: none;
+        aspect-ratio: auto;
+        background-image: url('bg-2.png'), url('bg.png');
+        background-size: cover, cover;
+        background-position: center, center;
+        background-repeat: no-repeat, no-repeat;
+      }
+
+      .doll-stage {
+        width: min(44vw, 190px);
+        height: 66dvh;
+        top: 51%;
+        left: 50%;
+      }
+
+      .scatter-item {
+        /* Bigger touch target without changing the visual tag size. */
+        min-width: 52px;
+        min-height: 58px;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .tag-unopened {
+        width: clamp(50px, 13vw, 66px);
+        height: clamp(70px, 18vw, 92px);
+      }
+
+      .tag-emoji {
+        font-size: clamp(1.65rem, 7vw, 2.2rem);
+      }
+
+      .scrap-opened {
+        width: clamp(118px, 34vw, 155px);
+        min-height: clamp(82px, 17vw, 112px);
+      }
+
+      .scrap-content {
+        padding: 12% 9% 10%;
+      }
+
+      .scrap-text {
+        font-size: clamp(0.82rem, 3.5vw, 1rem);
+        line-height: 1.18;
+        text-shadow:
+          0 1px 3px rgba(0,0,0,.98),
+          0 2px 7px rgba(0,0,0,.9);
+      }
+
+      /* Portrait composition:
+         4 tags on the left + 5 tags on the right,
+         leaving a clean vertical corridor for the doll. */
+      #item-1 { left: 10%; top: 12%; transform: rotate(-7deg); }
+      #item-2 { left: 8%; top: 30%; transform: rotate(6deg); }
+      #item-3 { left: 10%; top: 48%; transform: rotate(-5deg); }
+      #item-4 { left: 8%; top: 66%; transform: rotate(7deg); }
+
+      #item-5 { right: 10%; top: 9%; transform: rotate(6deg); }
+      #item-6 { right: 8%; top: 25%; transform: rotate(-7deg); }
+      #item-7 { right: 10%; top: 41%; transform: rotate(5deg); }
+      #item-8 { right: 8%; top: 57%; transform: rotate(-6deg); }
+      #item-9 { right: 10%; top: 73%; transform: rotate(8deg); }
+
+      /* Opened notes expand inward only slightly; the center remains
+         reserved for the doll. */
+      #item-1.is-opened { left: 0.5%; top: 10%; }
+      #item-2.is-opened { left: 0.5%; top: 29%; }
+      #item-3.is-opened { left: 0.5%; top: 48%; }
+      #item-4.is-opened { left: 0.5%; top: 67%; }
+
+      #item-5.is-opened { right: 0.5%; top: 8%; }
+      #item-6.is-opened { right: 0.5%; top: 26%; }
+      #item-7.is-opened { right: 0.5%; top: 44%; }
+      #item-8.is-opened { right: 0.5%; top: 62%; }
+      #item-9.is-opened { right: 0.5%; top: 80%; }
+
+      /* Avoid hover-only behavior on touch devices. */
+      .scatter-item:hover .tag-emoji {
+        transform: none;
+      }
+
+      .scatter-item:active .tag-emoji {
+        transform: scale(1.12);
+      }
+    }
+
+    @media (max-width: 360px) and (orientation: portrait) {
+      .doll-stage {
+        width: 42vw;
+        height: 64dvh;
+      }
+
+      .tag-unopened {
+        width: 54px;
+        height: 76px;
+      }
+
+      .tag-emoji {
+        font-size: 1.75rem;
+      }
+
+      .scrap-opened {
+        width: 31vw;
+        min-height: 78px;
+      }
+
+      .scrap-text {
+        font-size: 0.76rem;
+      }
+    }
+
+    /* Small landscape phones/tablets: use the full available height
+       while retaining the original horizontal composition. */
+    @media (max-height: 600px) and (orientation: landscape) {
+      .box-canvas {
+        width: 100vw;
+        height: 100dvh;
+        max-width: none;
+        max-height: none;
+        aspect-ratio: auto;
+        background-size: cover;
+      }
+
+      .doll-stage {
+        width: 25vw;
+        height: 72dvh;
+      }
+
+      .scrap-opened {
+        width: clamp(145px, 22vw, 210px);
+        min-height: 100px;
+      }
+    }
+
+    /* ========================================================
        RESPONSIVE SAFE-SCALING (MOBILE / TABLET)
        ======================================================== */
-    @media (max-width: 900px) {
+    @media (max-width: 900px) and (min-width: 601px) {
       .doll-stage {
         width: 38%;
         height: 64%;
@@ -394,16 +589,12 @@
   <!-- ========================================================
        STAGE 1: 3D SOLID BOX LID (UNBOXING)
        ======================================================== */ -->
-  <div class="box-lid-viewport" id="boxLid">
-    <div class="lid-surface"></div>
-    <div class="lid-ribbon-v"></div>
-    <div class="lid-ribbon-h"></div>
-    
-    <div class="lid-seal">
-      <div class="seal-subtitle">A Special Birthday Gift</div>
-      <h1 class="seal-title">For You</h1>
-      <div class="seal-prompt">Tap to Open Your Box ✨</div>
-    </div>
+  <div class="box-lid-viewport" id="boxLid" aria-label="Open birthday gift">
+    <picture>
+      <source media="(max-width: 600px) and (orientation: portrait)" srcset="lid2.png">
+      <img class="lid-image" src="lid.png" alt="Birthday gift lid">
+    </picture>
+    <div class="lid-greeting">Happy Birthday!</div>
   </div>
 
   <!-- ========================================================
@@ -427,15 +618,15 @@
        DATA: 9 OUTFITS & 3 REUSED PAPERS
        ======================================================== */
     const outfitsData = [
-      { id: 1, emoji: "🪄", file: "outfit-1.png", paperFile: "paper-1.png", wish: "“May your year be filled with real-life magic, brave adventures, and pure wonder!”" },
-      { id: 2, emoji: "📚", file: "outfit-2.png", paperFile: "paper-2.png", wish: "“Here’s to relentless curiosity, brilliant triumphs, and staying effortlessly sharp!”" },
-      { id: 3, emoji: "🌟", file: "outfit-3.png", paperFile: "paper-3.png", wish: "“Never dim your light—you are the warmest, brightest star in every single room!”" },
-      { id: 4, emoji: "🧛‍♀️", file: "outfit-4.png", paperFile: "paper-1.png", wish: "“Wishing you a dangerously captivating year of drama, power, and timeless allure.”" },
-      { id: 5, emoji: "💄", file: "outfit-5.png", paperFile: "paper-2.png", wish: "“To turning heads, shattering expectations, and conquering life in high heels!”" },
-      { id: 6, emoji: "📸", file: "outfit-6.png", paperFile: "paper-3.png", wish: "“May this year take you to breathtaking destinations and unforgettable sunsets!”" },
-      { id: 7, emoji: "💻", file: "outfit-7.png", paperFile: "paper-1.png", wish: "“May all your visions compile smoothly and your ambitious dreams soar to the stars!”" },
-      { id: 8, emoji: "🧸", file: "outfit-8.png", paperFile: "paper-2.png", wish: "“Wishing you slow cozy mornings, warm knit sweaters, and all the sweet comfort in the world.”" },
-      { id: 9, emoji: "🎭", file: "outfit-9.png", paperFile: "paper-3.png", wish: "“May life be an enchanting grand ballroom where every turn brings joy, romance, and magic!”" }
+      { id: 1, emoji: "🪄", file: "outfit-1.png", paperFile: "paper-1.png", wish: "“ Для Нади ведущей настолок: Весёлых игр и азартных игроков!”" },
+      { id: 2, emoji: "📚", file: "outfit-2.png", paperFile: "paper-2.png", wish: "“ Для Нади учителя: Благодарных учеников, которые ценят тебя и твой профессионализм! (+ много денег)”" },
+      { id: 3, emoji: "🌟", file: "outfit-3.png", paperFile: "paper-3.png", wish: "“ Для Нади звезды SkyStars: Интересных заданий и лёгких побед!”" },
+      { id: 4, emoji: "🧛‍♀️", file: "outfit-4.png", paperFile: "paper-1.png", wish: "“ Для Нади энтузиаста: Друзей, которые разделяют твои увлечения!”" },
+      { id: 5, emoji: "💄", file: "outfit-5.png", paperFile: "paper-2.png", wish: "“ Для Нади идейницы: Нескончаемого вдохновения и творческой реализации!”" },
+      { id: 6, emoji: "📸", file: "outfit-6.png", paperFile: "paper-3.png", wish: "“ Для Нади путешественницы: Дорог неизведанно-интересных и приключений приятных!”" },
+      { id: 7, emoji: "💻", file: "outfit-7.png", paperFile: "paper-1.png", wish: "“ Для Нади амбассадора: Звёздных проектов с нужным тебе уровнем славы!”" },
+      { id: 8, emoji: "🧸", file: "outfit-8.png", paperFile: "paper-2.png", wish: "“ Для Нади мамы: Увеличения процента спокойных дней материнства!”" },
+      { id: 9, emoji: "🎭", file: "outfit-9.png", paperFile: "paper-3.png", wish: "“ Для Нади жены Дракулы: Каплю доброй сказки в привычную жизнь!”" }
     ];
 
     /* ========================================================
